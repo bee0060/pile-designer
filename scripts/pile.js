@@ -1316,10 +1316,12 @@
                         fireLoad();
                     }
 
-                    assign($content['style'], {
-                        left: '30px',
-                        top: '80px'
-                    });
+                    if (urlData.mode === DESIGN_TIME) {
+                        assign($content['style'], {
+                            left: '30px',
+                            top: '80px'
+                        });
+                    }
                 });
 
                 on($img, 'error', function () {
@@ -1771,7 +1773,7 @@
             loadCounter += 1;
 
             ajax({
-                url: '//mwc.github.io/pile-designer/data/sample.json',
+                url: 'https://mwc.github.io/pile-designer/data/sample.json',
                 success: loadDataSuccess,
                 fail: function () {
                     loadDataFail();
