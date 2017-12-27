@@ -379,6 +379,9 @@
 
         var XML_NS = 'http://www.w3.org/2000/svg';
 
+        var loadCallbacks = [];
+        var loadCounter = 0;
+
         var propertyBar;
         var topBar;
         var mainView;
@@ -388,9 +391,6 @@
         var dataSource;
         var urlData;
         var pileTypes;
-
-        var loadCallbacks = [];
-        var loadCounter = 0;
 
         function getBorderColor(obj) {
             return obj ? (obj.borderColor || obj.borderTopColor) : '';
@@ -699,15 +699,15 @@
             var current = null;
             var contentStyle = $content['style'];
 
-            var resizer;
-            var textbox;
-
             var verifyDefaultResult = {
                 success: true,
                 code: VALIDATION_SUCCESS,
                 tag: null,
                 message: '验证通过'
             };
+
+            var resizer;
+            var textbox;
 
             function resize(shape, size, point) {
                 var delta = size / 2;
@@ -1707,23 +1707,19 @@
         }
 
         function figureSize(svg) {
-            var width;
-            var height;
             var viewBox;
-            var size;
-            var text = svg.substring(0, 1000).match(/<svg(.|\r|\n)*?>/i)[0];
+            var height;
 
-            width = text.match(/\bwidth\=(?:\'\")(.*?)(?:\'\")/i);
+            var text = svg.substring(0, 1000).match(/<svg(.|\r|\n)*?>/i)[0];
+            var width = text.match(/\bwidth\=(?:\'\")(.*?)(?:\'\")/i);
 
             if (width != null && (height = text.match(/\bheight\=(?:\'\")(.*?)(?:\'\")/i)) != null) {
-                size = width[1];
+                return float(width[1]) + 'px';
             }
             else {
                 viewBox = text.match(/\bviewBox\=(?:\'|\")(.*?)(?:\'|\")/i);
-                size = viewBox != null ? viewBox[1].split(/\,|\s/i)[2] : 0;
+                return float(viewBox != null ? viewBox[1].split(/\,|\s/i)[2] : 0) + 'px';
             }
-
-            return float(size) + 'px';
         }
 
         function loadDataSuccess(d) {
@@ -1809,8 +1805,8 @@
                     })[0];
                 },
                 inc: function (id, count, callback) {
+                    var _count;
                     var item = this.get(id);
-                    var c;
 
                     if (item) {
                         if (typeof count === 'function') {
@@ -1819,14 +1815,14 @@
                         }
 
                         if (typeof count === 'number') {
-                            c = count;
+                            _count = count;
                         }
 
                         if (typeof count === 'undefined') {
-                            c = 1;
+                            _count = 1;
                         }
 
-                        item.Count += c;
+                        item.Count += _count;
 
                         if (item.Count < 0) {
                             item.Count = 0;
