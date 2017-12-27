@@ -289,23 +289,24 @@
      */
     function message(msg, timeout) {
         var m = doc.createElement('div');
-        var ms = m.style;
 
-        ms.position = 'absolute';
-        ms.left = '0';
-        ms.top = '0';
-        ms.right = '0';
-        ms.bottom = '0';
-        ms.width = '280px';
-        ms.height = '30px';
-        ms.lineHeight = '30px';
-        ms.textAlign = 'center';
-        ms.borderRadius = '10px';
-        ms.backgroundColor = '#000';
-        ms.padding = '15px';
-        ms.color = '#fff';
-        ms.opacity = '0.7';
-        ms.margin = 'auto';
+        assign(m.style, {
+            position: 'absolute',
+            left: '0',
+            top: '0',
+            right: '0',
+            bottom: '0',
+            width: '280px',
+            height: '30px',
+            lineHeight: '30px',
+            textAlign: 'center',
+            borderRadius: '10px',
+            backgroundColor: '#000',
+            padding: '15px',
+            color: '#fff',
+            opacity: '0.7',
+            margin: 'auto'
+        });
 
         m.textContent = msg;
 
