@@ -577,19 +577,6 @@
                     return { bgColor: style.fill, borderColor: style.stroke };
                 }
 
-                function toJSON() {
-                    return qsa('li', $pilebar).map(function (node) {
-                        var scheme = node.firstElementChild.firstElementChild;
-                        var style = scheme['style'];
-
-                        return {
-                            name: qs('span', node).textContent,
-                            bgColor: style.fill,
-                            borderColor: style.stroke
-                        };
-                    });
-                }
-
                 function init() {
                     piles();
 
@@ -598,8 +585,7 @@
                         onchange: onchange,
                         getSelectItem: getSelectItem,
                         getSelectScheme: getSelectScheme,
-                        select: select,
-                        toJSON: toJSON
+                        select: select
                     };
                 }
 
@@ -686,8 +672,7 @@
                     selectPile: pilebar.select,
                     getSelectScheme: pilebar.getSelectScheme,
                     getSelectItem: pilebar.getSelectItem,
-                    operation: operation,
-                    toJSON: pilebar.toJSON
+                    operation: operation
                 };
             }
 
@@ -1774,7 +1759,7 @@
             loadCounter += 1;
 
             ajax({
-                url: 'https://mwc.github.io/pile-designer/data/sample.json',
+                url: '../data/sample.json',
                 success: loadDataSuccess,
                 fail: function () {
                     loadDataFail();
