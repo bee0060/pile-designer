@@ -1,0 +1,17 @@
+
+html, body, section, ul, li, figure, figcaption, fieldset, legend {
+    font-size: 15px;
+    color: #797979;
+    font-family: '微软雅黑';
+    
+    padding: 0;
+    margin: 0;
+}
+
+ul {
+    list-style: none;
+}
+
+fieldset {
+    border: 0 none;
+}

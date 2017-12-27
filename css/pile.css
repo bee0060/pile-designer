@@ -1,0 +1,515 @@
+
+body {
+    background-color: #f1f1f1;
+    overflow-x: hidden;
+}
+
+.status-bar {
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 26px;
+    line-height: 26px;
+    opacity: .9;
+    display: none;
+    color: #fff;
+    font-size: 12px;
+    padding: 0 10px;
+    text-align: right;
+    background-color: #007acc;
+    box-shadow: 0 0 24px 0 rgba(0, 0, 0, 0.06), 0 1px 0 0 rgba(0, 0, 0, 0.02);
+}
+
+.status-bar span {
+    margin-left: 5px;
+    margin-right: 5px;
+}
+
+.status-bar .status-text {
+    text-align: left;
+    float: left;
+}
+
+.status-bar span i {
+    font-style: normal;
+}
+
+.top-bar {
+    height: 53px;
+    background-color: #fff;
+
+    box-shadow: 0 0 24px 0 rgba(0, 0, 0, 0.06), 0 1px 0 0 rgba(0, 0, 0, 0.02);
+    box-sizing: border-box;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1;
+
+    opacity: .95;
+    display: none;
+
+    /* padding-right: 240px; */
+}
+
+.top-bar .operation {
+    min-width: auto;
+    position: absolute;
+    top: 0;
+    right: 20px;
+    display: none;
+    /* right: 260px; */
+}
+
+.operation .save,
+.operation .commit {
+    outline: 0 none;
+}
+
+.container .top-bar .operation li {
+    outline: 0 none;
+}
+
+.container .top-bar .operation li:active,
+.container .top-bar .operation li.selected {
+    color: #1f1016;
+    background-image: linear-gradient(315deg, #ccdfff, #eaf2ff);
+}
+
+.container .top-bar .operation li:active path {
+    fill: #1f1016;
+}
+
+.top-bar .operation .op-btn path {
+    fill: #9f2085;
+}
+
+.operation .save svg:first-child {
+    width: 21px;
+    height: 21px;
+}
+
+.container .top-bar .operation .op-btn svg:first-child {
+    width: 25px;
+    height: 25px;
+}
+
+.top-bar > ul {
+    display: flex;
+    height: 53px;
+    align-items: center;
+    align-content: center;
+    flex-wrap: nowrap;
+    background-color: #fff;
+    padding-left: 10px;
+    
+    min-width: 380px;
+    overflow: hidden;
+}
+
+.top-bar > ul > li > svg:first-child {
+    display: inline-block;
+    width: 24px;
+    height: 24px;
+    margin: 0;
+    padding: 0;
+    vertical-align: middle;
+}
+
+.top-bar > ul > li > svg.scheme > circle {
+    box-shadow: 0 0 15px 0 rgba(0, 0, 0, 0.06), 0 1px 0 0 rgba(0, 0, 0, 0.02);
+}
+
+.top-bar > ul > li {
+    position: relative;
+    cursor: pointer;
+    color: #374175;
+    line-height: 53px;
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+.top-bar > ul > li > .more {
+    position: absolute;
+    width: 7px;
+    height: 7px;
+    border: 2px solid transparent;
+    border-radius: 3px;
+    bottom: 1px;
+    right: 1px;
+    display: none;
+}
+
+.top-bar > ul > li > .more > path {
+    fill: #959494;
+}
+
+.top-bar > ul > li > .more:hover {
+    background-color: #dfdbdb;
+}
+
+.top-bar > ul > li.selected > .more:hover {
+    background-color: #b6d0fc;
+}
+
+.top-bar > ul > li:hover {
+    background-image: linear-gradient(315deg, #efefef, #f5f5f5);
+}
+
+.top-bar > ul > li:hover .more {
+    display: block;
+}
+
+.top-bar > ul > li.selected {
+    background-image: linear-gradient(315deg, #ccdfff, #eaf2ff);
+}
+
+.top-bar > ul > li > span {
+    vertical-align: middle;
+    margin-left: -2px;
+}
+
+.top-bar > figure {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    /* right: 240px; */
+    z-index: -1;
+    opacity: 0;
+    outline: 0 none;
+    background-color: #fff;
+    box-shadow: 0 0 24px 0 rgba(0, 0, 0, 0.06), 0 1px 0 0 rgba(0, 0, 0, 0.02);
+}
+
+.pile-name-box {
+    position: absolute;
+    z-index: 1;
+    display: none;
+    border: 0 none;
+    outline: 0 none;
+    color: #04032e;
+    text-align: center;
+    background-color: transparent;
+    text-shadow: #fff 0 0 5px;
+}
+
+.shape {
+    position: absolute;
+    border-width: 2px;
+    opacity: .9;
+    
+    text-align: center;
+    color: #fff;
+    text-shadow: #000 0 0 5px;
+
+    border-style: solid;
+    box-sizing: border-box;
+    background-color: #d8d5d5;
+    border-color: #a5a3a3;
+}
+
+.shape-resizer {
+    display: none;
+    position: absolute;
+    border: 1px solid #02ece1;
+    box-sizing: border-box;
+    background-color: transparent;
+}
+
+.shape-resizer li {
+    position: absolute;
+    box-sizing: border-box;
+    width: 10px;
+    height: 10px;
+    z-index: 1;
+    border-radius: 2px;
+    border: 1px solid #02ece1;
+    background-color: #9dfcf7;
+}
+
+.shape-resizer li.resizer-left-top {
+    cursor: nwse-resize;
+    left: -5px;
+    top: -5px;
+}
+
+.shape-resizer li.resizer-right-top {
+    cursor: nesw-resize;
+    right: -5px;
+    top: -5px;
+}
+
+.shape-resizer li.resizer-left-bottom {
+    cursor: nesw-resize;
+    left: -5px;
+    bottom: -5px;
+}
+
+.shape-resizer li.resizer-right-bottom {
+    cursor: nwse-resize;
+    right: -5px;
+    bottom: -5px;
+}
+
+@keyframes slide-down {
+    from {
+        opacity: 0;
+        top: 0;
+    }
+    80% {
+        opacity: .5;
+        top: 60px;
+    }
+    to {
+        opacity: 1;
+        top: 53px;
+    }
+}
+
+@keyframes slide-up {
+    from {
+        opacity: 1;
+        top: 53px;
+    }
+    20% {
+        opacity: .7;
+        top: 58px;
+    }
+    to {
+        opacity: 0;
+        top: 0;
+    }
+}
+
+.top-bar > figure.expando {
+    opacity: 1\9\0;
+    top: 53px\9\0;
+    animation: 300ms forwards slide-down;
+}
+
+.top-bar > figure.collapse {
+    opacity: 0\9\0;
+    top: 0\9\0;
+    animation: 300ms forwards slide-up;
+}
+
+.top-bar > figure > ul {
+    display: flex;
+    flex-wrap: wrap;
+    border-top: 1px solid #f5f5f5;
+    overflow: hidden;
+}
+
+.top-bar > figure > ul > li {
+    height: 24px;
+    width: 24px;
+    border-width: 2px;
+    border-style: solid;
+    margin: 10px;
+    cursor: pointer;
+    border-radius: 12px;
+    box-sizing: border-box;
+    box-shadow: 0 0 15px 0 rgba(0, 0, 0, 0.06), 0 1px 0 0 rgba(0, 0, 0, 0.02);
+}
+
+.cc-red {
+    background-color: #ff4d70;
+    border-color: #cc3e5a;
+}
+
+.cc-blue {
+    background-color: #0098ff;
+    border-color: #007acc;
+}
+
+.cc-green {
+    background-color: #4ecc00;
+    border-color: #3b9900;
+}
+
+.cc-yellow {
+    background-color: #fff60d;
+    border-color: #ccc50a;
+}
+
+.cc-purple {
+    background-color: #ff1c92;
+    border-color: #cc1675;
+}
+
+.cc-orange {
+    background-color: #ff8700;
+    border-color: #cc6c00;
+}
+
+.cc-gray {
+    background-color: #ccc;
+    border-color: #999;
+}
+
+.cc-dark-blue {
+    background-color: #009999;
+    border-color: #006666;
+}
+
+.cc-tan {
+    background-color: #d2b48c;
+    border-color: #9f886a;
+}
+
+.cc-turquoise {
+    background-color: #40e0d0;
+    border-color: #31ada1;
+}
+
+.cc-chartreuse {
+    background-color: #7fff00;
+    border-color: #66cc00;
+}
+
+.sidebar-menu {
+    display: none;
+    width: 240px;
+    z-index: 2;
+    background-color: #fff;
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    opacity: .95;
+    box-shadow: 0 0 24px 0 rgba(0, 0, 0, 0.06), 0 1px 0 0 rgba(0, 0, 0, 0.02);
+}
+
+.main-view {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    z-index: 0;
+    
+    overflow: hidden;
+}
+
+.main-view-wrapper {
+    position: absolute;
+    margin: auto;
+    box-sizing: border-box;
+}
+
+.main-content {
+    position: absolute;
+
+    top: 0;
+    left: 0;
+    margin: auto;
+    border-radius: 5px;
+    
+    box-sizing: border-box;
+    box-shadow: 0 0 24px 0 rgba(0, 0, 0, 0.06), 0 1px 0 0 rgba(0, 0, 0, 0.02);
+}
+
+.master {
+    display: block;
+    border-radius: 5px;
+}
+
+.shape-canvas {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    overflow: hidden;
+}
+
+.shape-canvas .shape:hover {
+    cursor: move;
+}
+
+.readonly .shape-canvas .shape:hover {
+    cursor: auto;
+}
+
+svg circle {
+    stroke-width: 6.99;
+}
+
+.c-red circle {
+    fill: #ff4d70;
+    stroke: #cc3e5a;
+}
+
+.c-blue circle {
+    fill: #0098ff;
+    stroke: #007acc;
+}
+
+.c-green circle {
+    fill: #4ecc00;
+    stroke: #3b9900;
+}
+
+.position-bar {
+    position: fixed;
+    display: none;
+    z-index: 1;
+    height: 40px;
+    line-height: 34px;
+    font-size: 14px;
+    width: 323px;
+    top: 58px;
+    right: 5px;
+    padding: 0 10px;
+    background-color: #fff;
+    border: 1px solid #eee;
+    box-shadow: 0 0 24px 0 rgba(0, 0, 0, 0.06), 0 1px 0 0 rgba(0, 0, 0, 0.02);
+    box-sizing: border-box;
+}
+
+.position-bar > * {
+    vertical-align: middle;
+}
+
+.position-bar input {
+    box-sizing: border-box;
+    border: 1px solid #eee;
+    height: 28px;
+    padding: 0 5px;
+    width: 80px;
+    outline: 0 none;
+}
+
+.position-bar > span {
+    display: inline-block;
+    width: 120px;
+    font-size: 13px;
+    overflow: hidden;
+    color: #bbb;
+}
+
+.position-bar > svg {
+    width: 14px;
+    height: 14px;
+    margin-left: 10px;
+    cursor: pointer;
+}
+
+.position-bar .pos-right {
+    transform: rotate(-180deg);
+}
+
+.position-bar > svg:first-child {
+    margin-left: 5px;
+}
+
+.position-bar > svg path {
+    fill: #13227a;
+}
+
+.position-bar > svg.disabled path {
+    fill: #c1c1c1;
+}

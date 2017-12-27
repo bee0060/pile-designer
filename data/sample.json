@@ -1,0 +1,81 @@
+{
+    "Data": {
+        "DrawingId": "83c060ab-1ccf-4dc8-9216-64c507b47f4b",
+        "DrawingType": "1",
+        "Types": [
+            {
+                "Id": "1",
+                "Name": "预制桩",
+                "Total": 4
+            },
+            {
+                "Id": "2",
+                "Name": "管制桩",
+                "Total": 3
+            },
+            {
+                "Id": "3",
+                "Name": "浇灌桩",
+                "Total": 2
+            }
+        ],
+        "Items": [
+            {
+                "Id": "lvtymt1arr9",
+                "Name": "A001",
+                "Type": "1",
+                "Info": "{\"center\":{\"x\":467,\"y\":173},\"size\":112.606,\"scheme\":{\"bgColor\":\"rgb(255, 77, 112)\",\"borderColor\":\"rgb(204, 62, 90)\"}}"
+            },
+            {
+                "Id": "zj0pwfcefc",
+                "Name": "A002",
+                "Type": "1",
+                "Info": "{\"center\":{\"x\":664,\"y\":195},\"size\":112.606,\"scheme\":{\"bgColor\":\"rgb(255, 77, 112)\",\"borderColor\":\"rgb(204, 62, 90)\"}}"
+            },
+            {
+                "Id": "bth47g7klv7",
+                "Name": "A003",
+                "Type": "1",
+                "Info": "{\"center\":{\"x\":733,\"y\":369},\"size\":112.606,\"scheme\":{\"bgColor\":\"rgb(255, 77, 112)\",\"borderColor\":\"rgb(204, 62, 90)\"}}"
+            },
+            {
+                "Id": "p09nxds38h9",
+                "Name": "A004",
+                "Type": "1",
+                "Info": "{\"center\":{\"x\":971,\"y\":234},\"size\":112.606,\"scheme\":{\"bgColor\":\"rgb(255, 77, 112)\",\"borderColor\":\"rgb(204, 62, 90)\"}}"
+            },
+            {
+                "Id": "jb218qwl6a8",
+                "Name": "B001",
+                "Type": "2",
+                "Info": "{\"center\":{\"x\":1009.99965,\"y\":373.99965000000003},\"size\":65.2993,\"scheme\":{\"bgColor\":\"rgb(0, 152, 255)\",\"borderColor\":\"rgb(0, 122, 204)\"}}"
+            },
+            {
+                "Id": "cplczep95pf",
+                "Name": "B002",
+                "Type": "2",
+                "Info": "{\"center\":{\"x\":1003.99965,\"y\":625.99965},\"size\":86.3713,\"scheme\":{\"bgColor\":\"rgb(0, 152, 255)\",\"borderColor\":\"rgb(0, 122, 204)\"}}"
+            },
+            {
+                "Id": "haxvj21os6",
+                "Name": "B003",
+                "Type": "2",
+                "Info": "{\"center\":{\"x\":1100.0019,\"y\":615.9999},\"size\":84.4038,\"scheme\":{\"bgColor\":\"rgb(0, 152, 255)\",\"borderColor\":\"rgb(0, 122, 204)\"}}"
+            },
+            {
+                "Id": "q9ehzyefo9g",
+                "Name": "C001",
+                "Type": "3",
+                "Info": "{\"center\":{\"x\":1113.0031,\"y\":382.0001},\"size\":69.4262,\"scheme\":{\"bgColor\":\"rgb(78, 204, 0)\",\"borderColor\":\"rgb(59, 153, 0)\"}}"
+            },
+            {
+                "Id": "tpz539vc47",
+                "Name": "C002",
+                "Type": "3",
+                "Info": "{\"center\":{\"x\":1260.0007,\"y\":382.9997},\"size\":57.2014,\"scheme\":{\"bgColor\":\"rgb(78, 204, 0)\",\"borderColor\":\"rgb(59, 153, 0)\"}}"
+            }
+        ]
+    },
+    "Code": 0,
+    "Message": "string"
+}
