@@ -362,7 +362,7 @@
         return typeof String.prototype.trim === 'function' ? str.trim() : str.replace(/^\s+|\s+$/g, '');
     }
 
-    function View(pilesUrl, imageUrl) {
+    function View() {
         var KEY_CODE_DELETE = 46;
         var KEY_CODE_ESC = 27;
         var KEY_CODE_G = 71;
