@@ -69,6 +69,20 @@
     function on(el, type, handler) {
         if (el) {
             el.addEventListener(type, handler, false);
+
+            if ('ontouchstart' in doc) {
+                switch (type) {
+                    case 'mousedown':
+                        el.addEventListener('touchstart', handler, false);
+                        break;
+                    case 'mousemove':
+                        el.addEventListener('touchmove', handler, false);
+                        break;
+                    case 'mouseup':
+                        el.addEventListener('touchend', handler, false);
+                        break;
+                }
+            }
         }
     }
 
