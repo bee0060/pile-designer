@@ -1263,7 +1263,7 @@
 
                         $shape = create(info.size, info.center, info.scheme);
 
-                        if (urlData.highlight && (urlData.highlight.indexOf(name) !== -1 || (urlData.pos && urlData.pos.toLowerCase() === name))) {
+                        if ((urlData.highlight && urlData.highlight.indexOf(name) !== -1 || (urlData.pos && urlData.pos.toLowerCase() === name))) {
                             positionShape(selectShape($shape));
                         }
 
@@ -1762,7 +1762,7 @@
             loadCounter += 1;
 
             ajax({
-                url: 'https://mwc.github.io/pile-designer/data/sample.json',
+                url: '../data/sample.json',
                 success: loadDataSuccess,
                 fail: function () {
                     loadDataFail();
