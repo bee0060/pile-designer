@@ -1257,13 +1257,13 @@
                     }
 
                     if (info) {
-                        if (urlData.highlight && urlData.highlight !== name) {
+                        if (urlData.highlight && urlData.highlight.indexOf(name) === -1) {
                             assign(info.scheme, { bgColor: '#ccc', borderColor: '#999' });
                         }
 
                         $shape = create(info.size, info.center, info.scheme);
 
-                        if (urlData.highlight === name || (urlData.pos && urlData.pos.toLowerCase() === name)) {
+                        if (urlData.highlight && (urlData.highlight.indexOf(name) !== -1 || (urlData.pos && urlData.pos.toLowerCase() === name))) {
                             positionShape(selectShape($shape));
                         }
 
@@ -1304,13 +1304,6 @@
                     else {
                         loadCounter -= 1;
                         fireLoad();
-                    }
-
-                    if (urlData.mode === DESIGN_TIME) {
-                        assign($content['style'], {
-                            left: '30px',
-                            top: '80px'
-                        });
                     }
                 });
 
@@ -1598,6 +1591,15 @@
                 return init();
             }
 
+            function fixedPosition() {
+                if (urlData.mode === DESIGN_TIME && !(urlData.highlight || urlData.pos)) {
+                    assign($content['style'], {
+                        left: '30px',
+                        top: '80px'
+                    });
+                }
+            }
+
             function init() {
                 var op;
 
@@ -1682,7 +1684,8 @@
                 return {
                     exportData: exportData,
                     importData: importData,
-                    loadImage: loadImage
+                    loadImage: loadImage,
+                    fixedPosition: fixedPosition
                 };
             }
 
@@ -1759,7 +1762,7 @@
             loadCounter += 1;
 
             ajax({
-                url: 'https://mwc.github.io/pile-designer/data/sample.json',
+                url: '../data/sample.json',
                 success: loadDataSuccess,
                 fail: function () {
                     loadDataFail();
@@ -1857,8 +1860,30 @@
             return types;
         }
 
+        function organizeHighlight(u) {
+            if (u.hl) {
+                u.highlight = u.hl;
+            }
+
+            if (typeof u.highlight === 'string') {
+                if (u.highlight) {
+                    u.highlight = u.highlight.toLowerCase().replace(/\s/g, '').split(',');
+                }
+
+                if (u.highlight.length === 0) {
+                    u.highlight = null;
+                }
+            }
+            else if (typeof u.highlight === 'number') {
+                u.highlight = [u.highlight + ''];
+            }
+            else {
+                u.highlight = null;
+            }
+        }
+
         function organizeUrlData(u) {
-            u.highlight = ('' + (u.highlight || u.hl || '')).toLowerCase();
+            organizeHighlight(u);
 
             u.mode = u.mode || DESIGN_TIME;
             u.mode = u.mode > 1 ? DESIGN_READONLY : u.mode;
@@ -2134,6 +2159,7 @@
 
         View().onload(function (view) {
             view.statusBar && view.statusBar.info('准备就绪', '');
+            view.mainView.fixedPosition();
         });
     }
 
