@@ -59,6 +59,15 @@
         }
     }
 
+    function handleTouchEvent(handler) {
+        var _ = this;
+        return function (e) {
+            if (e.targetTouches.length === 1) {
+                handler.call(this, e.targetTouches[0]);
+            }
+        };
+    }
+
     /**
      * 事件绑定
      * 
@@ -67,21 +76,17 @@
      * @param {EventListener} handler    事件处理回调
      */
     function on(el, type, handler) {
+        var eventMap = {
+            'mousedown': 'touchstart',
+            'mousemove': 'touchmove',
+            'mouseup': 'touchend'
+        };
+
         if (el) {
             el.addEventListener(type, handler, false);
 
-            if ('ontouchstart' in doc) {
-                switch (type) {
-                    case 'mousedown':
-                        el.addEventListener('touchstart', handler, false);
-                        break;
-                    case 'mousemove':
-                        el.addEventListener('touchmove', handler, false);
-                        break;
-                    case 'mouseup':
-                        el.addEventListener('touchend', handler, false);
-                        break;
-                }
+            if ('ontouchstart' in doc && type in eventMap) {
+                el.addEventListener(eventMap[type], handleTouchEvent(handler), false);
             }
         }
     }
@@ -1776,7 +1781,7 @@
             loadCounter += 1;
 
             ajax({
-                url: 'https://mwc.github.io/pile-designer/data/sample.json',
+                url: '../data/sample.json',
                 success: loadDataSuccess,
                 fail: function () {
                     loadDataFail();
