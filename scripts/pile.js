@@ -346,16 +346,20 @@
         on(doc, 'mousewheel', handler);
     }
 
+    function px(x) {
+        return (x || 0) + 'px';
+    }
+
     function float(n) {
         return parseFloat(n) || 0;
     }
 
     function fontSize(size) {
-        return (float(size) / 5) + 'px';
+        return px(float(size) / 5);
     }
 
     function lineHeight(height) {
-        return (float(height) - float(fontSize(height)) / 2) + 'px'
+        return px(float(height) - float(fontSize(height)) / 2)
     }
 
     function trim(str) {
@@ -711,13 +715,13 @@
 
             function resize(shape, size, point) {
                 var delta = size / 2;
-                var newSize = size + 'px';
+                var newSize = px(size);
 
                 assign(shape.style, {
                     width: newSize,
                     height: newSize,
-                    left: (point.x - delta) + 'px',
-                    top: (point.y - delta) + 'px',
+                    left: px(point.x - delta),
+                    top: px(point.y - delta),
                     borderRadius: newSize,
                     lineHeight: lineHeight(size),
                     fontSize: fontSize(size)
@@ -734,11 +738,11 @@
                 assign($div.style, {
                     backgroundColor: scheme.bgColor,
                     borderColor: getBorderColor(scheme),
-                    left: (center.x - halfSize) + 'px',
-                    top: (center.y - halfSize) + 'px',
-                    width: size + 'px',
-                    height: size + 'px',
-                    borderRadius: halfSize + 'px'
+                    left: px(center.x - halfSize),
+                    top: px(center.y - halfSize),
+                    width: px(size),
+                    height: px(size),
+                    borderRadius: px(halfSize)
                 });
 
                 return $canvas.appendChild($div);
@@ -883,8 +887,8 @@
                     };
 
                     assign($content['style'], {
-                        left: (delta.x - float(shapeStyle.left) - halfSize) + 'px',
-                        top: (delta.y - float(shapeStyle.top) - halfSize) + 'px'
+                        left: px(delta.x - float(shapeStyle.left) - halfSize),
+                        top: px(delta.y - float(shapeStyle.top) - halfSize)
                     });
 
                     return shape;
@@ -901,7 +905,7 @@
                 if (shape instanceof Element) {
                     style = shape['style'];
 
-                    style.left = (float(style.left) + offset) + 'px';
+                    style.left = px(float(style.left) + offset);
                     resizer.move(shape);
                     statusBar.info('微调模式', 'x: ' + float(style.left) + ',y: ' + float(style.top));
                 }
@@ -913,7 +917,7 @@
                 if (shape instanceof Element) {
                     style = shape['style'];
 
-                    style.top = (float(style.top) + offset) + 'px';
+                    style.top = px(float(style.top) + offset);
                     resizer.move(shape);
                     statusBar.info('微调模式', 'x: ' + float(style.left) + ',y: ' + float(style.top));
                 }
@@ -1029,8 +1033,8 @@
                         e.stopPropagation();
 
                         assign(current['style'], {
-                            left: (position.left + delta.x) + 'px',
-                            top: (position.top + delta.y) + 'px'
+                            left: px(position.left + delta.x),
+                            top: px(position.top + delta.y)
                         });
 
                         resizer.move(current);
@@ -1167,8 +1171,8 @@
 
                 function dragmove(delta) {
                     assign(contentStyle, {
-                        left: (left + delta.x) + 'px',
-                        top: (top + delta.y) + 'px'
+                        left: px(left + delta.x),
+                        top: px(top + delta.y)
                     });
 
                     statusBar && statusBar.info('位置: ' + (left + delta.x) + ',' + (left + delta.x), 1);
@@ -1547,14 +1551,14 @@
                             newSize = oldSize + delta;
 
                             if (newSize >= MIN_SHAPE_SIZE) {
-                                pNewSize = newSize + 'px';
+                                pNewSize = px(newSize);
 
                                 if (className === 'resizer-left-top' || className === 'resizer-left-bottom') {
-                                    resizerStyle.left = currentShapeStyle.left = (position.left - delta) + 'px';
+                                    resizerStyle.left = currentShapeStyle.left = px(position.left - delta);
                                 }
 
                                 if (className === 'resizer-left-top' || className === 'resizer-right-top') {
-                                    resizerStyle.top = currentShapeStyle.top = (position.top - delta) + 'px';
+                                    resizerStyle.top = currentShapeStyle.top = px(position.top - delta);
                                 }
 
                                 resizerStyle.width = resizerStyle.height = pNewSize;
@@ -1562,7 +1566,7 @@
                                 assign(currentShapeStyle, {
                                     width: pNewSize,
                                     height: pNewSize,
-                                    borderRadius: (newSize / 2) + 'px',
+                                    borderRadius: px(newSize / 2),
                                     lineHeight: lineHeight(newSize),
                                     fontSize: fontSize(newSize)
                                 });
@@ -1714,11 +1718,11 @@
             var width = text.match(/\bwidth\=(?:\'\")(.*?)(?:\'\")/i);
 
             if (width != null && (height = text.match(/\bheight\=(?:\'\")(.*?)(?:\'\")/i)) != null) {
-                return float(width[1]) + 'px';
+                return px(float(width[1]));
             }
             else {
                 viewBox = text.match(/\bviewBox\=(?:\'|\")(.*?)(?:\'|\")/i);
-                return float(viewBox != null ? viewBox[1].split(/\,|\s/i)[2] : 0) + 'px';
+                return px(float(viewBox != null ? viewBox[1].split(/\,|\s/i)[2] : 0));
             }
         }
 
