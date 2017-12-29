@@ -889,6 +889,7 @@
                     text = trim(text);
                     shape.textContent = text;
                     shape.setAttribute('data-shape-text', text);
+                    shape.setAttribute('title', text);
                 }
             }
 
