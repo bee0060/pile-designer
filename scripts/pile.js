@@ -59,6 +59,15 @@
         }
     }
 
+    function handleTouchEvent(handler) {
+        var _ = this;
+        return function (e) {
+            if (e.targetTouches.length === 1) {
+                handler.call(this, e.targetTouches[0]);
+            }
+        };
+    }
+
     /**
      * 事件绑定
      * 
@@ -67,8 +76,18 @@
      * @param {EventListener} handler    事件处理回调
      */
     function on(el, type, handler) {
+        var eventMap = {
+            'mousedown': 'touchstart',
+            'mousemove': 'touchmove',
+            'mouseup': 'touchend'
+        };
+
         if (el) {
             el.addEventListener(type, handler, false);
+
+            if ('ontouchstart' in doc && type in eventMap) {
+                el.addEventListener(eventMap[type], handleTouchEvent(handler), false);
+            }
         }
     }
 
@@ -346,16 +365,20 @@
         on(doc, 'mousewheel', handler);
     }
 
+    function px(x) {
+        return (x || 0) + 'px';
+    }
+
     function float(n) {
         return parseFloat(n) || 0;
     }
 
     function fontSize(size) {
-        return (float(size) / 5) + 'px';
+        return px(float(size) / 5);
     }
 
     function lineHeight(height) {
-        return (float(height) - float(fontSize(height)) / 2) + 'px';
+        return px(float(height) - float(fontSize(height)) / 2);
     }
 
     function getScale(transform) {
@@ -728,13 +751,13 @@
 
             function resize(shape, size, point) {
                 var delta = size / 2;
-                var newSize = size + 'px';
+                var newSize = px(size);
 
                 assign(shape.style, {
                     width: newSize,
                     height: newSize,
-                    left: (point.x - delta) + 'px',
-                    top: (point.y - delta) + 'px',
+                    left: px(point.x - delta),
+                    top: px(point.y - delta),
                     borderRadius: newSize,
                     lineHeight: lineHeight(size),
                     fontSize: fontSize(size)
@@ -751,11 +774,11 @@
                 assign($div.style, {
                     backgroundColor: scheme.bgColor,
                     borderColor: getBorderColor(scheme),
-                    left: (center.x - halfSize) + 'px',
-                    top: (center.y - halfSize) + 'px',
-                    width: size + 'px',
-                    height: size + 'px',
-                    borderRadius: halfSize + 'px'
+                    left: px(center.x - halfSize),
+                    top: px(center.y - halfSize),
+                    width: px(size),
+                    height: px(size),
+                    borderRadius: px(halfSize)
                 });
 
                 return $canvas.appendChild($div);
@@ -883,6 +906,7 @@
                     text = trim(text);
                     shape.textContent = text;
                     shape.setAttribute('data-shape-text', text);
+                    shape.setAttribute('title', text);
                 }
             }
 
@@ -900,8 +924,8 @@
                     };
 
                     assign($content['style'], {
-                        left: (delta.x - float(shapeStyle.left) - halfSize) + 'px',
-                        top: (delta.y - float(shapeStyle.top) - halfSize) + 'px'
+                        left: px(delta.x - float(shapeStyle.left) - halfSize),
+                        top: px(delta.y - float(shapeStyle.top) - halfSize)
                     });
 
                     return shape;
@@ -918,7 +942,7 @@
                 if (shape instanceof Element) {
                     style = shape['style'];
 
-                    style.left = (float(style.left) + offset) + 'px';
+                    style.left = px(float(style.left) + offset);
                     resizer.move(shape);
                     statusBar.info('微调模式', 'x: ' + float(style.left) + ',y: ' + float(style.top));
                 }
@@ -930,7 +954,7 @@
                 if (shape instanceof Element) {
                     style = shape['style'];
 
-                    style.top = (float(style.top) + offset) + 'px';
+                    style.top = px(float(style.top) + offset);
                     resizer.move(shape);
                     statusBar.info('微调模式', 'x: ' + float(style.left) + ',y: ' + float(style.top));
                 }
@@ -1046,8 +1070,8 @@
                         e.stopPropagation();
 
                         assign(current['style'], {
-                            left: (position.left + delta.x) + 'px',
-                            top: (position.top + delta.y) + 'px'
+                            left: px(position.left + delta.x),
+                            top: px(position.top + delta.y)
                         });
 
                         resizer.move(current);
@@ -1192,8 +1216,8 @@
 
                 function dragmove(delta) {
                     assign(contentStyle, {
-                        left: (left + delta.x) + 'px',
-                        top: (top + delta.y) + 'px'
+                        left: px(left + delta.x),
+                        top: px(top + delta.y)
                     });
 
                     statusBar && statusBar.info('位置: ' + (left + delta.x) + ',' + (left + delta.x), 1);
@@ -1278,13 +1302,13 @@
                     }
 
                     if (info) {
-                        if (urlData.highlight && urlData.highlight !== name) {
+                        if (urlData.highlight && urlData.highlight.indexOf(name) === -1) {
                             assign(info.scheme, { bgColor: '#ccc', borderColor: '#999' });
                         }
 
                         $shape = create(info.size, info.center, info.scheme);
 
-                        if (urlData.highlight === name || (urlData.pos && urlData.pos.toLowerCase() === name)) {
+                        if ((urlData.highlight && urlData.highlight.indexOf(name) !== -1 || (urlData.pos && urlData.pos.toLowerCase() === name))) {
                             positionShape(selectShape($shape));
                         }
 
@@ -1325,13 +1349,6 @@
                     else {
                         loadCounter -= 1;
                         fireLoad();
-                    }
-
-                    if (urlData.mode === DESIGN_TIME) {
-                        assign($content['style'], {
-                            left: '30px',
-                            top: '80px'
-                        });
                     }
                 });
 
@@ -1572,14 +1589,14 @@
                             newSize = oldSize + delta;
 
                             if (newSize >= MIN_SHAPE_SIZE) {
-                                pNewSize = newSize + 'px';
+                                pNewSize = px(newSize);
 
                                 if (className === 'resizer-left-top' || className === 'resizer-left-bottom') {
-                                    resizerStyle.left = currentShapeStyle.left = (position.left - delta) + 'px';
+                                    resizerStyle.left = currentShapeStyle.left = px(position.left - delta);
                                 }
 
                                 if (className === 'resizer-left-top' || className === 'resizer-right-top') {
-                                    resizerStyle.top = currentShapeStyle.top = (position.top - delta) + 'px';
+                                    resizerStyle.top = currentShapeStyle.top = px(position.top - delta);
                                 }
 
                                 resizerStyle.width = resizerStyle.height = pNewSize;
@@ -1587,7 +1604,7 @@
                                 assign(currentShapeStyle, {
                                     width: pNewSize,
                                     height: pNewSize,
-                                    borderRadius: (newSize / 2) + 'px',
+                                    borderRadius: px(newSize / 2),
                                     lineHeight: lineHeight(newSize),
                                     fontSize: fontSize(newSize)
                                 });
@@ -1617,6 +1634,15 @@
                 }
 
                 return init();
+            }
+
+            function fixedPosition() {
+                if (urlData.mode === DESIGN_TIME && !(urlData.highlight || urlData.pos)) {
+                    assign($content['style'], {
+                        left: '30px',
+                        top: '80px'
+                    });
+                }
             }
 
             function init() {
@@ -1703,7 +1729,8 @@
                 return {
                     exportData: exportData,
                     importData: importData,
-                    loadImage: loadImage
+                    loadImage: loadImage,
+                    fixedPosition: fixedPosition
                 };
             }
 
@@ -1739,11 +1766,11 @@
             var width = text.match(/\bwidth\=(?:\'\")(.*?)(?:\'\")/i);
 
             if (width != null && (height = text.match(/\bheight\=(?:\'\")(.*?)(?:\'\")/i)) != null) {
-                return float(width[1]) + 'px';
+                return px(float(width[1]));
             }
             else {
                 viewBox = text.match(/\bviewBox\=(?:\'|\")(.*?)(?:\'|\")/i);
-                return float(viewBox != null ? viewBox[1].split(/\,|\s/i)[2] : 0) + 'px';
+                return px(float(viewBox != null ? viewBox[1].split(/\,|\s/i)[2] : 0));
             }
         }
 
@@ -1878,8 +1905,30 @@
             return types;
         }
 
+        function organizeHighlight(u) {
+            if (u.hl) {
+                u.highlight = u.hl;
+            }
+
+            if (typeof u.highlight === 'string') {
+                if (u.highlight) {
+                    u.highlight = u.highlight.toLowerCase().replace(/\s/g, '').split(',');
+                }
+
+                if (u.highlight.length === 0) {
+                    u.highlight = null;
+                }
+            }
+            else if (typeof u.highlight === 'number') {
+                u.highlight = [u.highlight + ''];
+            }
+            else {
+                u.highlight = null;
+            }
+        }
+
         function organizeUrlData(u) {
-            u.highlight = ('' + (u.highlight || u.hl || '')).toLowerCase();
+            organizeHighlight(u);
 
             u.mode = u.mode || DESIGN_TIME;
             u.mode = u.mode > 1 ? DESIGN_READONLY : u.mode;
@@ -2155,6 +2204,7 @@
 
         View().onload(function (view) {
             view.statusBar && view.statusBar.info('准备就绪', '');
+            view.mainView.fixedPosition();
         });
     }
 
