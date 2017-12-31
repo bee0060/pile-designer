@@ -378,24 +378,7 @@
     }
 
     function lineHeight(height) {
-        return px(float(height) - float(fontSize(height)) / 2);
-    }
-
-    function getScale(transform) {
-        var matrixMatch, matrix, matrixParams, scaleX, scaleY;
-
-        if (!transform || transform === 'none') return { x: 1, y: 1};
-
-        matrixMatch = transform.match(/matrix\(([^)]+)\)/i);
-        matrix = (matrixMatch && matrixMatch[1]) || '1 0 0 1';
-        matrixParams = matrix.split(',');
-        scaleX = matrixParams[0] || 1;
-        scaleY = matrixParams[3] || 1;
-
-        return {
-            x: float(scaleX),
-            y: float(scaleY)
-        };
+        return px(float(height) - float(fontSize(height)) / 2)
     }
 
     function trim(str) {
@@ -1096,7 +1079,6 @@
 
                 var left;
                 var top;
-                var scale;
 
                 function minSizeDetect() {
                     if (current instanceof Element) {
@@ -1119,7 +1101,7 @@
                     return drawing(e, function () {
                         if (e['button'] === 0) {
                             moreThenTotal(function (id) {
-                                var style, relativeX, relativeY;
+                                var style;
 
                                 controlDrawing = true;
 
@@ -1128,12 +1110,8 @@
                                 style = getComputedStyle($content);
                                 left = float(style.left);
                                 top = float(style.top);
-                                scale = getScale(style.transform);
 
-                                relativeX = e['clientX'] - left;
-                                relativeY = e['clientY'] - top;
-
-                                center = { x: relativeX / scale.x, y: relativeY / scale.y };
+                                center = { x: e['clientX'] - left, y: e['clientY'] - top };
                                 current = create(0, center, topBar.getSelectScheme());
                                 current.setAttribute('data-shape-type', id);
 
@@ -1146,15 +1124,12 @@
 
                 on($canvas, 'mousemove', function (e) {
                     return drawing(e, function () {
-                        var size, relativeX, relativeY;
+                        var size;
 
                         if (controlDrawing) {
-                            relativeX = e['clientX'] - left;
-                            relativeY = e['clientY'] - top;
-
                             size = 2 * Math.sqrt(
-                                Math.pow(Math.abs(relativeX / scale.x - center.x), 2) +
-                                Math.pow(Math.abs(relativeY / scale.y - center.y), 2)
+                                Math.pow(Math.abs(e['clientX'] - left - center.x), 2) +
+                                Math.pow(Math.abs(e['clientY'] - top - center.y), 2)
                             );
 
                             assign(current['style'], {
