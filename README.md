@@ -1,5 +1,5 @@
 # pile-designer
-[桩基设计器](https://mwc.github.io/pile-designer/nav.html) 导航页面
+[桩基设计器](nav.html) 导航页面
 
 ## pile.html 地址参数
 - `src` 图片地址
