@@ -356,7 +356,23 @@
     // 禁用浏览器默认的页面缩放
     function disablePageZoom() {
         function handler(e) {
-            // TODO: add custom scale
+            // Set custom scale to main-content
+            var $content = qs('.main-content');
+
+            // Get current scale from computed style
+            var computedStyle = getComputedStyle($content);
+            var currentScale = getScale(computedStyle.transform);
+            
+            // Allowed scale between 0.5 <==> 2
+            var isScollingUp = e.wheelDelta > 0;
+            var nextScale = currentScale.x + (isScollingUp ? 0.1 : -0.1);
+            nextScale = Math.max(0.5, Math.min(2, nextScale));
+
+            // Set next transform to $content.style.transform, so should update the scale attr of it.
+            var nextTransform = $content.style.transform.replace(/scale\([^)]*\)|none/g, '') + ' scale('+ nextScale +')';
+            $content.style.transform = nextTransform;
+
+            // prevent default mouse wheel event
             if ((e.wheelDelta && e.ctrlKey) || e.detail) {
                 e.returnValue = false;
                 return false;
