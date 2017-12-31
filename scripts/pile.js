@@ -1832,7 +1832,7 @@
             loadCounter += 1;
 
             ajax({
-                url: 'https://mwc.github.io/pile-designer/data/sample.json',
+                url: './data/sample.json',
                 success: loadDataSuccess,
                 fail: function () {
                     loadDataFail();
