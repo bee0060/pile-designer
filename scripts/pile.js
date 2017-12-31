@@ -356,6 +356,7 @@
     // 禁用浏览器默认的页面缩放
     function disablePageZoom() {
         function handler(e) {
+            // TODO: add custom scale
             if ((e.wheelDelta && e.ctrlKey) || e.detail) {
                 e.returnValue = false;
                 return false;
@@ -978,6 +979,7 @@
             function doShapeEvents() {
                 var point;
                 var position;
+                var scale;
 
                 function shapeDragging(e, callback) {
                     if (!controlDrag && e.target['className'] === 'shape') {
@@ -1045,6 +1047,8 @@
                         var style;
 
                         if (e['button'] === 0) {
+                            var computedStyle = getComputedStyle($content);
+
                             if (controlCopyShape) {
                                 current = copyShape(e.target);
                             }
@@ -1054,6 +1058,7 @@
 
                             controlShape = true;
                             point = { x: e['clientX'], y: e['clientY'] };
+                            scale = getScale(computedStyle.transform);
 
                             if (current) {
                                 style = current['style'];
@@ -1065,7 +1070,7 @@
 
                 on($canvas, 'mousemove', function (e) {
                     if (current && controlShape) {
-                        var delta = { x: e['clientX'] - point.x, y: e['clientY'] - point.y };
+                        var delta = { x: (e['clientX'] - point.x) / scale.x, y: (e['clientY'] - point.y) / scale.y };
 
                         e.stopPropagation();
 
@@ -1557,17 +1562,21 @@
                     var handler = null;
                     var point;
                     var position;
+                    var scale;
                     var oldSize;
                     var className;
 
                     on($resizer, 'mousedown', function (e) {
                         if (e.target['tagName'].toLowerCase() === 'li' && currentShape instanceof Element) {
+                            var computedStyle = getComputedStyle($content);
+
                             controlResizing = true;
                             e.stopPropagation();
 
                             handler = e.target;
                             point = { x: e['clientX'], y: e['clientY'] };
                             position = { left: float(currentShapeStyle.left), top: float(currentShapeStyle.top) };
+                            scale = getScale(computedStyle.transform);
                             oldSize = float(currentShapeStyle.width);
                             className = handler['className'];
 
@@ -1585,7 +1594,7 @@
 
                             currentShapeStyle = currentShape['style'];
 
-                            delta = ((className === 'resizer-left-top' || className === 'resizer-left-bottom') ? -1 : 1) * (e['clientX'] - point.x);
+                            delta = ((className === 'resizer-left-top' || className === 'resizer-left-bottom') ? -1 : 1) * (e['clientX'] - point.x) / scale.x;
                             newSize = oldSize + delta;
 
                             if (newSize >= MIN_SHAPE_SIZE) {
