@@ -417,11 +417,6 @@ body {
     box-shadow: 0 0 24px 0 rgba(0, 0, 0, 0.06), 0 1px 0 0 rgba(0, 0, 0, 0.02);
 }
 
-.main-content-scaled {
-    transform: scale(0.5);
-    transform-origin: 0 0;
-}
-
 .master {
     display: block;
     border-radius: 5px;
