@@ -419,10 +419,6 @@ body {
     transform-origin: 0 0;   
 }
 
-.main-content-scaled {
-    transform: scale(0.5);
-}
-
 .master {
     display: block;
     border-radius: 5px;
